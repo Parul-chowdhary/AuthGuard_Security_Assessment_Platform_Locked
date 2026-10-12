@@ -5,6 +5,8 @@ authorized assessment. Controls never send traffic themselves.
 """
 from __future__ import annotations
 from typing import Any
+from importlib import import_module
+from pathlib import Path
 
 def evaluate_spec(spec: dict[str, Any], observation: dict[str, Any]) -> dict[str, Any] | None:
     """Evaluate one declarative control against a captured observation.
@@ -27,7 +29,7 @@ def evaluate_spec(spec: dict[str, Any], observation: dict[str, Any]) -> dict[str
     elif op == "truthy":
         passed = bool(actual)
     elif op == "falsy":
-        passed = not bool(actual)
+        passed = exists and not bool(actual)
     elif op == "contains":
         passed = exists and actual is not None and expected in actual
     elif op == "not_contains":
@@ -43,3 +45,19 @@ def evaluate_spec(spec: dict[str, Any], observation: dict[str, Any]) -> dict[str
                 "message": spec["pass_message"]}
     return {"id": spec["id"], "status": "fail", "severity": spec["severity"],
             "message": spec["fail_message"], "field": key, "observed": actual}
+
+
+def evaluate_all_controls(observation: dict[str, Any]) -> list[dict[str, Any]]:
+    """Run every registered control against one captured observation.
+
+    This loader only evaluates supplied data; it does not make network requests.
+    Control modules are imported in stable filename order for reproducible reports.
+    """
+    package_dir = Path(__file__).parent
+    results: list[dict[str, Any]] = []
+    for module_path in sorted(package_dir.glob("control_*.py")):
+        module = import_module(f"{__name__}.{module_path.stem}")
+        result = module.evaluate(observation)
+        if result is not None:
+            results.append(result)
+    return results

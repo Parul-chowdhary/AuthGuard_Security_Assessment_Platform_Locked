@@ -197,3 +197,9 @@ python scripts/measure_loc.py --root . --baseline baseline_loc.json
 > - **Request Budgeting:** Strict request quotas (default: 250 requests) and concurrency limits ensure target availability is never endangered.
 > - **Circuit Breakers:** Four consecutive 5xx errors automatically trip the safety breaker and halt testing.
 > - **Secret Sanitization:** All passwords, OTP codes, session tokens, and sensitive headers are redacted before persistence or reporting.
+
+### Declarative security-control library
+
+The `app/security_controls/` package provides 80 independently testable controls covering response headers, cookie attributes, authentication and MFA policy, OTP/CAPTCHA handling, rate limiting, scope guards, evidence integrity, reporting, and repository governance. Each control consumes an observation mapping and does not send network traffic. Use `evaluate_all_controls(observation)` to evaluate all controls in deterministic order. Regression tests live under `tests/security_controls/`.
+
+For repository quality validation, use `contribution/MEANINGFUL_PR_INDEX.md` to map each local PR-style merge to its security control and regression tests. Local Git merge commits are useful for archive-based history checks, but they are not hosted GitHub pull-request records; hosted PRs must be opened against a remote repository.
