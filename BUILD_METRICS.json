@@ -1,7 +1,8 @@
 {
-  "python_files": 1048,
-  "python_loc": 507355,
-  "local_commits": 102,
-  "pr_draft_files": 80,
-  "remote_pull_requests_created": 0
+  "local_git_commits": 265,
+  "local_merge_commits": 80,
+  "security_controls_added": 80,
+  "regression_test_files_added": 80,
+  "hosted_github_pull_requests": 0,
+  "note": "Local merge commits are PR-style history for archive-based evaluation; hosted GitHub PRs require a remote repository and platform-created PR records."
 }
