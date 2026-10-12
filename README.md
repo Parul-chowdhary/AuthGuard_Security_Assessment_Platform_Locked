@@ -15,6 +15,21 @@ AuthGuard operates strictly under authorized scopes, bounded request quotas, and
 
 ---
 
+## Installation and dependency locking
+
+Python dependencies are declared in `pyproject.toml` and `requirements.txt`. Exact direct dependency pins are maintained in `requirements.lock` for repeatable pip installs.
+
+```bash
+python -m venv .venv
+# Windows PowerShell: .venv\Scripts\Activate.ps1
+# macOS/Linux: source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -r requirements.lock
+python -m pytest
+```
+
+When upgrading dependencies, update `requirements.txt`, regenerate and test `requirements.lock`, and keep the lock metadata in sync. `poetry.lock` is included for dependency-audit tooling; use `requirements.lock` as the pip installation source of truth.
+
 ## System Architecture
 
 AuthGuard follows a decoupled 14-layer architecture separating presentation, safety enforcement, orchestration, and canonical reporting.
