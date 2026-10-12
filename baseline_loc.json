@@ -1,0 +1,43 @@
+{
+  "root_path": "C:\\Users\\P.KESHAV\\Desktop\\AUTHTEST",
+  "total_files": 1,
+  "total_raw_lines": 373,
+  "total_blank_lines": 52,
+  "total_comment_lines": 8,
+  "total_code_lines": 313,
+  "total_nonblank_lines": 321,
+  "duplicate_files_count": 0,
+  "by_language": {
+    "Python": {
+      "files": 1,
+      "raw": 373,
+      "blank": 52,
+      "comments": 8,
+      "code": 313,
+      "nonblank": 321
+    }
+  },
+  "by_directory": {
+    "scripts": {
+      "files": 1,
+      "raw": 373,
+      "blank": 52,
+      "comments": 8,
+      "code": 313,
+      "nonblank": 321
+    }
+  },
+  "files": [
+    {
+      "rel_path": "scripts/measure_loc.py",
+      "language": "Python",
+      "raw_lines": 373,
+      "blank_lines": 52,
+      "comment_lines": 8,
+      "code_lines": 313,
+      "nonblank_lines": 321,
+      "sha256_hash": "c8706a958aeccf3cf55e57557e81d5e4f60aef6e5c8b24d9797822c732858140",
+      "is_duplicate": false
+    }
+  ]
+}

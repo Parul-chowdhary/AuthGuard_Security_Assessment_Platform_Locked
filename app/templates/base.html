@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}AuthGuard — Website Authentication Security Assessment Platform{% endblock %}</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <div class="brand-icon">AG</div>
+            <div>
+                <div class="brand-title">AuthGuard</div>
+                <span class="brand-badge">SEC-OPS v1.0</span>
+            </div>
+        </div>
+
+        <ul class="sidebar-nav">
+            <li class="nav-item active"><a href="#" class="nav-link" data-section="dashboard"><span>📊</span> Dashboard</a></li>
+            <li class="nav-item"><a href="#" class="nav-link" data-section="wizard"><span>⚡</span> New Assessment</a></li>
+            <li class="nav-item"><a href="#" class="nav-link" data-section="monitor"><span>📡</span> Execution Monitor</a></li>
+            <li class="nav-item"><a href="#" class="nav-link" data-section="findings"><span>🛡️</span> Findings Explorer</a></li>
+            <li class="nav-item"><a href="#" class="nav-link" data-section="reports"><span>📑</span> Reports Center</a></li>
+            <li class="nav-item"><a href="#" class="nav-link" data-section="history"><span>🕰️</span> Retest History</a></li>
+            <li class="nav-item"><a href="#" class="nav-link" data-section="lab"><span>🧪</span> Demonstration Lab</a></li>
+            <li class="nav-item"><a href="#" class="nav-link" data-section="admin"><span>⚙️</span> Administration</a></li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <span id="user-display-name">Auditor Session</span>
+            <button class="btn btn-secondary" style="padding: 4px 8px; font-size: 11px;" onclick="location.href='/login'">Switch</button>
+        </div>
+    </aside>
+
+    <!-- Main Container -->
+    <div class="main-wrapper">
+        <header class="top-header">
+            <div class="header-title">{% block page_title %}Security Operations Command Center{% endblock %}</div>
+            <div class="header-actions">
+                <span id="lab-mode-badge" class="badge badge-medium">LAB: CONNECTING...</span>
+                <button class="btn btn-primary" onclick="switchSection('wizard')">+ Launch Audit</button>
+            </div>
+        </header>
+
+        <main class="content-area">
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

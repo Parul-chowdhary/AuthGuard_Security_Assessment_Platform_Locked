@@ -1,0 +1,369 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- ==================== SECTION: DASHBOARD ==================== -->
+<div id="section-dashboard" class="content-section">
+    <!-- Top Stats -->
+    <div class="grid-stats">
+        <div class="stat-card">
+            <div class="stat-header">
+                <span class="stat-label">Total Assessments</span>
+                <span style="font-size: 18px;">🎯</span>
+            </div>
+            <div class="stat-value" id="stat-total-assessments">0</div>
+            <div class="stat-sub">Cumulative authorized audits</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-header">
+                <span class="stat-label">Active Running</span>
+                <span style="font-size: 18px;">⚡</span>
+            </div>
+            <div class="stat-value" style="color: var(--accent-cyan);" id="stat-running-assessments">0</div>
+            <div class="stat-sub">In-progress evaluations</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-header">
+                <span class="stat-label">Completed</span>
+                <span style="font-size: 18px;">✅</span>
+            </div>
+            <div class="stat-value" style="color: var(--status-success);" id="stat-completed-assessments">0</div>
+            <div class="stat-sub">Fully analyzed targets</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-header">
+                <span class="stat-label">Total Weaknesses</span>
+                <span style="font-size: 18px;">🛡️</span>
+            </div>
+            <div class="stat-value" style="color: var(--status-critical);" id="stat-total-findings">0</div>
+            <div class="stat-sub">Vulnerabilities identified</div>
+        </div>
+    </div>
+
+    <!-- Severity Breakdown Grid -->
+    <div class="panel">
+        <div class="panel-title">
+            <span>Findings by Severity Level</span>
+            <span class="badge badge-low">CVSS v3.1 Standards</span>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;">
+            <div style="background: var(--bg-secondary); padding: 16px; border-radius: 8px; border-left: 4px solid var(--status-critical);">
+                <div style="font-size: 12px; color: var(--text-muted);">CRITICAL</div>
+                <div style="font-size: 24px; font-weight: bold; color: var(--status-critical);" id="sev-critical">0</div>
+            </div>
+            <div style="background: var(--bg-secondary); padding: 16px; border-radius: 8px; border-left: 4px solid var(--status-high);">
+                <div style="font-size: 12px; color: var(--text-muted);">HIGH</div>
+                <div style="font-size: 24px; font-weight: bold; color: var(--status-high);" id="sev-high">0</div>
+            </div>
+            <div style="background: var(--bg-secondary); padding: 16px; border-radius: 8px; border-left: 4px solid var(--status-medium);">
+                <div style="font-size: 12px; color: var(--text-muted);">MEDIUM</div>
+                <div style="font-size: 24px; font-weight: bold; color: var(--status-medium);" id="sev-medium">0</div>
+            </div>
+            <div style="background: var(--bg-secondary); padding: 16px; border-radius: 8px; border-left: 4px solid var(--status-low);">
+                <div style="font-size: 12px; color: var(--text-muted);">LOW</div>
+                <div style="font-size: 24px; font-weight: bold; color: var(--status-low);" id="sev-low">0</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Assessments Table -->
+    <div class="panel">
+        <div class="panel-title">
+            <span>Recent Assessment Executions</span>
+            <button class="btn btn-secondary" onclick="loadDashboardData()" style="padding: 4px 10px; font-size: 12px;">Refresh</button>
+        </div>
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Assessment Name</th>
+                        <th>Target Destination</th>
+                        <th>Status</th>
+                        <th>Execution Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="table-recent-assessments">
+                    <!-- Dynamic Rows -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== SECTION: WIZARD ==================== -->
+<div id="section-wizard" class="content-section" style="display: none;">
+    <div class="panel" style="max-width: 800px; margin: 0 auto;">
+        <div class="panel-title">
+            <span>New Security Assessment Wizard</span>
+            <span class="badge badge-low">Controlled Ethical Testing</span>
+        </div>
+
+        <div class="wizard-steps">
+            <div class="wizard-step active" id="ws-1"><span class="step-num">1</span> Target & Scope</div>
+            <div class="wizard-step" id="ws-2"><span class="step-num">2</span> Modules & Budget</div>
+            <div class="wizard-step" id="ws-3"><span class="step-num">3</span> Authorization & Review</div>
+        </div>
+
+        <!-- Step 1 -->
+        <div class="wizard-panel" id="wizard-step-1">
+            <div class="form-group">
+                <label class="form-label">Assessment Title</label>
+                <input type="text" id="wizard-asm-name" class="form-control" value="Auth Flow Baseline Assessment" placeholder="e.g. Staging Auth Security Audit">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Select Authorized Target</label>
+                <select id="wizard-target-select" class="form-control">
+                    <!-- Options populated from API -->
+                </select>
+            </div>
+            <div style="background: rgba(6, 182, 212, 0.1); border: 1px solid rgba(6, 182, 212, 0.3); padding: 14px; border-radius: 6px; font-size: 13px; color: var(--accent-cyan); margin-top: 15px;">
+                💡 <strong>Scope Policy:</strong> Targets are validated against strict SSRF and hostname boundaries. Internal network probing is blocked unless explicitly targeting authorized demonstration fixtures.
+            </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="wizard-panel" id="wizard-step-2" style="display: none;">
+            <div class="form-group">
+                <label class="form-label">Security Assessment Modules</label>
+                <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 8px;">
+                    <label style="display: flex; align-items: center; gap: 8px; font-size: 14px;">
+                        <input type="checkbox" id="mod-otp" checked> <strong>One-Time Password (OTP) Security:</strong> Bypasses, invalid code acceptance, token reuse, rate limiting
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 8px; font-size: 14px;">
+                        <input type="checkbox" id="mod-ratelimit" checked> <strong>Login Rate Limiting & Brute-Force:</strong> HTTP 429 adherence, Retry-After headers, account enumeration
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 8px; font-size: 14px;">
+                        <input type="checkbox" id="mod-captcha" checked> <strong>CAPTCHA Server-Side Enforcement:</strong> Token omission, forged token validation, replay detection
+                    </label>
+                </div>
+            </div>
+            <div class="form-group" style="margin-top: 20px;">
+                <label class="form-label">Maximum Request Budget</label>
+                <input type="number" id="wizard-asm-budget" class="form-control" value="250" min="10" max="1000">
+                <span style="font-size: 12px; color: var(--text-dim);">Assessment halts immediately if this budget is reached.</span>
+            </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="wizard-panel" id="wizard-step-3" style="display: none;">
+            <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid var(--status-critical); padding: 16px; border-radius: 8px; margin-bottom: 20px;">
+                <h4 style="color: var(--status-critical); margin-bottom: 8px;">Mandatory Ethical Authorization Acknowledgment</h4>
+                <p style="font-size: 13px; color: #fca5a5; line-height: 1.5;">
+                    I certify that I am the authorized owner of the designated target system or possess documented, signed authorization from the stakeholder to conduct authentication security testing. I acknowledge that testing executes bounded, defensive security evaluations.
+                </p>
+                <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; margin-top: 12px; color: #fff;">
+                    <input type="checkbox" id="chk-auth-confirm" checked> I confirm authorized testing scope and safety policies.
+                </label>
+            </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; margin-top: 24px; border-top: 1px solid var(--border-color); padding-top: 16px;">
+            <button class="btn btn-secondary" id="btn-wizard-prev" style="display: none;">Previous</button>
+            <div></div>
+            <button class="btn btn-primary" id="btn-wizard-next">Next Step</button>
+            <button class="btn btn-primary" id="btn-wizard-submit" style="display: none;">🚀 Launch Assessment</button>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== SECTION: MONITOR ==================== -->
+<div id="section-monitor" class="content-section" style="display: none;">
+    <div class="panel">
+        <div class="panel-title">
+            <div>
+                <span id="mon-id">#--</span> <span id="mon-name">Select an Assessment to Monitor</span>
+            </div>
+            <div>
+                <span id="mon-status" class="badge badge-running">IDLE</span>
+                <button class="btn btn-danger" style="padding: 4px 10px; font-size: 12px; margin-left: 8px;" onclick="cancelCurrentAssessment()">Halt Execution</button>
+            </div>
+        </div>
+
+        <div class="grid-stats">
+            <div class="stat-card">
+                <div class="stat-label">Target Website</div>
+                <div style="font-size: 15px; font-weight: bold; margin-top: 6px;" id="mon-target">--</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Current Phase</div>
+                <div style="font-size: 14px; color: var(--accent-cyan); margin-top: 6px;" id="mon-phase">Waiting...</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Tests Completed</div>
+                <div class="stat-value" id="mon-progress">0 / 0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Request Budget Used</div>
+                <div class="stat-value" id="mon-budget">0 / 250</div>
+            </div>
+        </div>
+
+        <div style="margin-top: 20px;">
+            <h4 style="margin-bottom: 12px; font-size: 15px;">Live Test Execution Telemetry</h4>
+            <ul id="mon-testcases" style="list-style: none; background: var(--bg-secondary); border-radius: 8px; padding: 16px; border: 1px solid var(--border-color);">
+                <li style="color: var(--text-dim); font-size: 13px;">No active test execution currently selected.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== SECTION: FINDINGS ==================== -->
+<div id="section-findings" class="content-section" style="display: none;">
+    <div class="panel">
+        <div class="panel-title">
+            <span>Findings Explorer & Remediation Tracker</span>
+            <div style="display: flex; gap: 10px;">
+                <select id="filter-severity" class="form-control" style="width: 140px; padding: 6px 10px; font-size: 12px;" onchange="loadFindings()">
+                    <option value="">All Severities</option>
+                    <option value="Critical">Critical</option>
+                    <option value="High">High</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Low">Low</option>
+                </select>
+                <select id="filter-module" class="form-control" style="width: 130px; padding: 6px 10px; font-size: 12px;" onchange="loadFindings()">
+                    <option value="">All Modules</option>
+                    <option value="otp">OTP</option>
+                    <option value="rate_limit">Rate Limit</option>
+                    <option value="captcha">CAPTCHA</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Vulnerability Title</th>
+                        <th>Severity</th>
+                        <th>Endpoint</th>
+                        <th>Module</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="table-findings">
+                    <!-- Populated dynamically -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== SECTION: REPORTS ==================== -->
+<div id="section-reports" class="content-section" style="display: none;">
+    <div class="panel">
+        <div class="panel-title">
+            <span>Audit Reports Center</span>
+            <span class="badge badge-low">Multi-Format Canonical Exports</span>
+        </div>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">
+            Export cryptographically signed security audit reports in Jinja2 HTML, ReportLab PDF, and canonical JSON formats.
+        </p>
+
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Assessment Name</th>
+                        <th>Outcome</th>
+                        <th>Timestamp</th>
+                        <th>Download Reports</th>
+                    </tr>
+                </thead>
+                <tbody id="table-reports">
+                    <!-- Populated dynamically -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== SECTION: DEMO LAB ==================== -->
+<div id="section-lab" class="content-section" style="display: none;">
+    <div class="panel">
+        <div class="panel-title">
+            <span>Demonstration Testbed & Training Lab</span>
+            <span class="badge badge-medium">Isolated Testing Fixture</span>
+        </div>
+        <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;">
+            AuthGuard includes an isolated local target application (<code>lab/demo_auth_app</code>) configured with both vulnerable and secure modes to safely test and benchmark the assessment engine without external traffic.
+        </p>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div style="background: var(--bg-secondary); padding: 20px; border-radius: 8px; border: 1px solid var(--border-color);">
+                <h4 style="color: var(--status-critical); margin-bottom: 10px;">Vulnerable Testing Mode</h4>
+                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">
+                    Simulates common authentication weaknesses: accepts '000000' dummy OTP, allows OTP and CAPTCHA replay, lacks rate limiting, and discloses account existence.
+                </p>
+                <button class="btn btn-danger" onclick="toggleLabMode('vulnerable')">Switch Lab to Vulnerable Mode</button>
+            </div>
+
+            <div style="background: var(--bg-secondary); padding: 20px; border-radius: 8px; border: 1px solid var(--border-color);">
+                <h4 style="color: var(--status-success); margin-bottom: 10px;">Secure Hardened Mode</h4>
+                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">
+                    Enforces industry defenses: strict single-use OTPs, 5-attempt login rate limits with HTTP 429 and Retry-After headers, uniform error messaging, and mandatory CAPTCHA validation.
+                </p>
+                <button class="btn btn-primary" onclick="toggleLabMode('secure')">Switch Lab to Secure Mode</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== SECTION: ADMIN ==================== -->
+<div id="section-admin" class="content-section" style="display: none;">
+    <div class="panel">
+        <div class="panel-title">
+            <span>System Administration & Audit Logs</span>
+            <span class="badge badge-low">Governance & Observability</span>
+        </div>
+        <p style="font-size: 13px; color: var(--text-muted);">
+            Immutable audit logs track all target registrations, assessment executions, and user role modifications.
+        </p>
+    </div>
+</div>
+
+<!-- ==================== MODAL: FINDING DETAIL ==================== -->
+<div id="finding-modal" class="modal-overlay">
+    <div class="modal-box">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; margin-bottom: 16px;">
+            <h3 id="modal-f-title" style="font-size: 18px; color: #fff;">Vulnerability Details</h3>
+            <button class="btn btn-secondary" style="padding: 4px 8px;" onclick="closeFindingModal()">✕</button>
+        </div>
+
+        <input type="hidden" id="modal-finding-id">
+        <div style="margin-bottom: 12px; font-size: 13px;">
+            <strong>Target Endpoint:</strong> <code id="modal-f-endpoint">/login</code>
+        </div>
+        <div style="margin-bottom: 12px; font-size: 13px;" id="modal-f-desc">Description text</div>
+
+        <div style="background: var(--bg-secondary); padding: 12px; border-radius: 6px; margin: 12px 0; font-size: 13px;">
+            <div style="color: var(--status-critical); margin-bottom: 6px;">
+                <strong>Observed Behavior:</strong> <span id="modal-f-actual">--</span>
+            </div>
+            <div style="color: var(--status-success);">
+                <strong>Expected Behavior:</strong> <span id="modal-f-expected">--</span>
+            </div>
+        </div>
+
+        <div style="margin-bottom: 16px; font-size: 13px; color: var(--accent-cyan);">
+            <strong>Remediation Guidance:</strong>
+            <p id="modal-f-remediation" style="margin-top: 4px; color: #cbd5e1;"></p>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-color); padding-top: 16px;">
+            <span style="font-size: 12px; color: var(--text-dim);">Update Triage Status:</span>
+            <div style="display: flex; gap: 8px;">
+                <button class="btn btn-secondary" style="font-size: 11px;" onclick="updateFindingStatusFromModal('Confirmed')">Confirmed</button>
+                <button class="btn btn-secondary" style="font-size: 11px;" onclick="updateFindingStatusFromModal('Resolved')">Resolved</button>
+                <button class="btn btn-secondary" style="font-size: 11px;" onclick="updateFindingStatusFromModal('False positive')">False Positive</button>
+                <button class="btn btn-secondary" style="font-size: 11px;" onclick="updateFindingStatusFromModal('Accepted risk')">Accept Risk</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

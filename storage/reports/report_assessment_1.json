@@ -1,0 +1,139 @@
+{
+  "assessment_id": 1,
+  "name": "Quarterly Website Authentication Resilience Audit",
+  "status": "completed",
+  "started_at": "2026-10-12T05:20:21.126597",
+  "completed_at": "2026-10-12T05:20:22.053944",
+  "target": {
+    "id": 5,
+    "name": "AuthGuard Local Demonstration Lab",
+    "base_url": "http://127.0.0.1:8001",
+    "hostname": "127.0.0.1"
+  },
+  "telemetry": {
+    "total_tests": 9,
+    "passed_tests": 0,
+    "failed_tests": 9,
+    "requests_used": 21,
+    "request_budget": 200
+  },
+  "findings": [
+    {
+      "id": 1,
+      "title": "OTP Verification Bypass on Invalid Code",
+      "module": "otp",
+      "severity": "Critical",
+      "cvss_score": 9.1,
+      "endpoint": "/verify-otp",
+      "description": "The server accepted an obviously invalid OTP code ('000000') or returned 200 OK without verification.",
+      "expected": "Server must respond with HTTP 401 Unauthorized or 400 Bad Request.",
+      "actual": "Server responded with HTTP 200.",
+      "impact": "Complete authentication bypass enabling account takeover without valid second factor.",
+      "remediation": "Enforce strict cryptographic comparison of OTP secrets and reject unverified codes."
+    },
+    {
+      "id": 2,
+      "title": "OTP Replay / Reuse Vulnerability",
+      "module": "otp",
+      "severity": "Critical",
+      "cvss_score": 9.1,
+      "endpoint": "/verify-otp",
+      "description": "The server permitted reuse of an already submitted One-Time Password.",
+      "expected": "OTPs must be single-use and immediately consumed/invalidated upon first verification.",
+      "actual": "Server accepted identical OTP on subsequent verification request.",
+      "impact": "Attackers intercepting an OTP can reuse it to authenticate.",
+      "remediation": "Mark OTP tokens as consumed in the database immediately upon successful verification."
+    },
+    {
+      "id": 3,
+      "title": "Missing OTP Attempt Rate Limiting",
+      "module": "otp",
+      "severity": "Medium",
+      "cvss_score": 5.3,
+      "endpoint": "/verify-otp",
+      "description": "Endpoint permitted 5 consecutive invalid OTP attempts without rate-limiting (HTTP 429) or lockout.",
+      "expected": "After 3-5 incorrect attempts, server should return HTTP 429 or lock the verification session.",
+      "actual": "Received responses: [400, 400, 400, 400, 400]",
+      "impact": "Increases susceptibility to automated 4-6 digit OTP brute-force attacks.",
+      "remediation": "Enforce strict per-account and per-IP attempt limits (max 3-5 failed tries per OTP)."
+    },
+    {
+      "id": 4,
+      "title": "Unbound OTP Verification State",
+      "module": "otp",
+      "severity": "High",
+      "cvss_score": 7.5,
+      "endpoint": "/verify-otp",
+      "description": "Server accepted OTP verification without user account or session binding.",
+      "expected": "Server must require authenticated session or explicit user binding.",
+      "actual": "Server returned HTTP 200",
+      "impact": "Cross-user OTP acceptance enabling lateral privilege escalation.",
+      "remediation": "Bind OTP secrets strictly to the server-side session of the authenticating user."
+    },
+    {
+      "id": 5,
+      "title": "Missing Rate Limiting on Authentication Endpoint",
+      "module": "rate_limit",
+      "severity": "Medium",
+      "cvss_score": 5.3,
+      "endpoint": "/login",
+      "description": "Authentication endpoint '/login' processed repeated invalid logins without returning HTTP 429 (Too Many Requests), rate-limit headers, or progressive backoff.",
+      "expected": "Server should return HTTP 429 or enforce temporary lockout after 5 failed login attempts.",
+      "actual": "Endpoint returned standard rejection statuses without rate limiting: [401, 401, 401, 401, 401, 401]",
+      "impact": "Enables automated offline/online credential testing and password guessing attacks.",
+      "remediation": "Implement IP and username based rate limiting (e.g., token bucket or leaky bucket algorithm) returning HTTP 429."
+    },
+    {
+      "id": 6,
+      "title": "Authentication Account Enumeration Weakness",
+      "module": "rate_limit",
+      "severity": "Low",
+      "cvss_score": 3.7,
+      "endpoint": "/login",
+      "description": "The authentication endpoint returns distinguishable error messages or status codes for valid usernames versus invalid usernames, allowing adversaries to enumerate valid accounts.",
+      "expected": "Server must return uniform error messages (e.g., 'Invalid credentials') and identical HTTP status codes.",
+      "actual": "Existing user status: 401, Nonexistent user status: 404",
+      "impact": "Allows attackers to harvest valid corporate usernames for targeted spear-phishing or credential attacks.",
+      "remediation": "Normalize all authentication failure messages and response times to be indistinguishable."
+    },
+    {
+      "id": 7,
+      "title": "Missing Server-Side CAPTCHA Enforcement",
+      "module": "captcha",
+      "severity": "Medium",
+      "cvss_score": 6.5,
+      "endpoint": "/login",
+      "description": "Authentication endpoint '/login' accepted an authentication request without requiring a CAPTCHA response token.",
+      "expected": "Server must validate that a valid CAPTCHA token accompanies the request and reject submissions missing the token with HTTP 400 or 422.",
+      "actual": "Server processed request without CAPTCHA token and returned HTTP 200.",
+      "impact": "Enables automated bot attacks, credential stuffing, and scripted login workflows.",
+      "remediation": "Enforce mandatory server-side verification of CAPTCHA tokens with the provider before processing credentials."
+    },
+    {
+      "id": 8,
+      "title": "Forged CAPTCHA Token Accepted",
+      "module": "captcha",
+      "severity": "High",
+      "cvss_score": 7.5,
+      "endpoint": "/login",
+      "description": "Server accepted a fabricated CAPTCHA token without validating its signature with the CAPTCHA verification API.",
+      "expected": "Server must query verification provider and reject unauthorized/forged tokens.",
+      "actual": "Server accepted forged token and returned HTTP 200.",
+      "impact": "Completely negates anti-bot protections by permitting static dummy tokens.",
+      "remediation": "Validate every token server-side via the provider secret key and verify success: true."
+    },
+    {
+      "id": 9,
+      "title": "CAPTCHA Token Replay / Reuse Vulnerability",
+      "module": "captcha",
+      "severity": "Medium",
+      "cvss_score": 5.8,
+      "endpoint": "/login",
+      "description": "The server permitted reuse of an already submitted CAPTCHA token across multiple requests.",
+      "expected": "CAPTCHA tokens must be strictly single-use and rejected on subsequent attempts.",
+      "actual": "Server accepted previously submitted CAPTCHA token on re-use attempt.",
+      "impact": "Attackers can solve a single CAPTCHA and replay the token to automate multiple requests.",
+      "remediation": "Ensure CAPTCHA tokens are consumed or enforce provider timestamp and hostname validation."
+    }
+  ]
+}
