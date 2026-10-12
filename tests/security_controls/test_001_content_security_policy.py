@@ -1,4 +1,4 @@
-from app.security_controls.001_content_security_policy import evaluate
+from app.security_controls.control_001_content_security_policy import evaluate
 
 def test_content_security_policy_passes_when_control_is_satisfied():
     result = evaluate({'content_security_policy': 'present'})

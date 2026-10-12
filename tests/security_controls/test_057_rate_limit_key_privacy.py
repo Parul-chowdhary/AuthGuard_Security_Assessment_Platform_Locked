@@ -1,4 +1,4 @@
-from app.security_controls.057_rate_limit_key_privacy import evaluate
+from app.security_controls.control_057_rate_limit_key_privacy import evaluate
 
 def test_rate_limit_key_privacy_passes_when_control_is_satisfied():
     result = evaluate({'rate_limit_key_hashed': True})

@@ -1,4 +1,4 @@
-from app.security_controls.049_captcha_replay_protection import evaluate
+from app.security_controls.control_049_captcha_replay_protection import evaluate
 
 def test_captcha_replay_protection_passes_when_control_is_satisfied():
     result = evaluate({'captcha_replay_protection': True})

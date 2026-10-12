@@ -1,4 +1,4 @@
-from app.security_controls.051_captcha_fail_closed import evaluate
+from app.security_controls.control_051_captcha_fail_closed import evaluate
 
 def test_captcha_fail_closed_passes_when_control_is_satisfied():
     result = evaluate({'captcha_provider_failure_mode': 'fail_closed'})

@@ -1,4 +1,4 @@
-from app.security_controls.008_cross_origin_opener_policy import evaluate
+from app.security_controls.control_008_cross_origin_opener_policy import evaluate
 
 def test_cross_origin_opener_policy_passes_when_control_is_satisfied():
     result = evaluate({'cross_origin_opener_policy': 'present'})

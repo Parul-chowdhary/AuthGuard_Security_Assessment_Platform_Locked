@@ -1,4 +1,4 @@
-from app.security_controls.070_audit_log_append_only import evaluate
+from app.security_controls.control_070_audit_log_append_only import evaluate
 
 def test_audit_log_append_only_passes_when_control_is_satisfied():
     result = evaluate({'audit_log_append_only': True})

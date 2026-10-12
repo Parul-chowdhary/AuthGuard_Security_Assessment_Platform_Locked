@@ -1,4 +1,4 @@
-from app.security_controls.040_otp_expiry import evaluate
+from app.security_controls.control_040_otp_expiry import evaluate
 
 def test_otp_expiry_passes_when_control_is_satisfied():
     result = evaluate({'otp_ttl_seconds': 1})

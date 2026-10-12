@@ -1,4 +1,4 @@
-from app.security_controls.038_password_not_logged import evaluate
+from app.security_controls.control_038_password_not_logged import evaluate
 
 def test_password_not_logged_passes_when_control_is_satisfied():
     result = evaluate({'password_logging_disabled': True})

@@ -1,4 +1,4 @@
-from app.security_controls.031_sensitive_action_reauth import evaluate
+from app.security_controls.control_031_sensitive_action_reauth import evaluate
 
 def test_sensitive_action_reauth_passes_when_control_is_satisfied():
     result = evaluate({'sensitive_action_reauth': True})

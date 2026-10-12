@@ -1,4 +1,4 @@
-from app.security_controls.004_x_content_type_options import evaluate
+from app.security_controls.control_004_x_content_type_options import evaluate
 
 def test_x_content_type_options_passes_when_control_is_satisfied():
     result = evaluate({'x_content_type_options': 'nosniff'})

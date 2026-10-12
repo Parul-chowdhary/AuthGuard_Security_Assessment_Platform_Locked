@@ -1,4 +1,4 @@
-from app.security_controls.059_request_budget import evaluate
+from app.security_controls.control_059_request_budget import evaluate
 
 def test_request_budget_passes_when_control_is_satisfied():
     result = evaluate({'request_budget_configured': True})

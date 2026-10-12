@@ -1,4 +1,4 @@
-from app.security_controls.019_session_cookie_no_domain import evaluate
+from app.security_controls.control_019_session_cookie_no_domain import evaluate
 
 def test_session_cookie_no_domain_passes_when_control_is_satisfied():
     result = evaluate({'session_domain': False})

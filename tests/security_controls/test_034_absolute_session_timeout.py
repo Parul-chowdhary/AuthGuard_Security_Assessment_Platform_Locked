@@ -1,4 +1,4 @@
-from app.security_controls.034_absolute_session_timeout import evaluate
+from app.security_controls.control_034_absolute_session_timeout import evaluate
 
 def test_absolute_session_timeout_passes_when_control_is_satisfied():
     result = evaluate({'session_absolute_timeout_minutes': 1})

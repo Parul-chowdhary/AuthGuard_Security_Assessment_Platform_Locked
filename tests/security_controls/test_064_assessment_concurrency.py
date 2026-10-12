@@ -1,4 +1,4 @@
-from app.security_controls.064_assessment_concurrency import evaluate
+from app.security_controls.control_064_assessment_concurrency import evaluate
 
 def test_assessment_concurrency_passes_when_control_is_satisfied():
     result = evaluate({'assessment_concurrency_limit': 1})

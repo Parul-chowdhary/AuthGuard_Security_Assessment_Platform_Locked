@@ -1,4 +1,4 @@
-from app.security_controls.011_server_banner import evaluate
+from app.security_controls.control_011_server_banner import evaluate
 
 def test_server_banner_passes_when_control_is_satisfied():
     result = evaluate({'server_banner': False})

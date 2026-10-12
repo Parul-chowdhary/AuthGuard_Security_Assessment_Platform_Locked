@@ -1,4 +1,4 @@
-from app.security_controls.075_report_includes_limitations import evaluate
+from app.security_controls.control_075_report_includes_limitations import evaluate
 
 def test_report_includes_limitations_passes_when_control_is_satisfied():
     result = evaluate({'report_limitations_included': True})

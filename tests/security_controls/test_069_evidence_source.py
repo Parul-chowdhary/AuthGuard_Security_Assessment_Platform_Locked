@@ -1,4 +1,4 @@
-from app.security_controls.069_evidence_source import evaluate
+from app.security_controls.control_069_evidence_source import evaluate
 
 def test_evidence_source_passes_when_control_is_satisfied():
     result = evaluate({'evidence_source_url': 'present'})

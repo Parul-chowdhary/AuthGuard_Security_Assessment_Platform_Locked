@@ -1,4 +1,4 @@
-from app.security_controls.043_otp_bound_to_session import evaluate
+from app.security_controls.control_043_otp_bound_to_session import evaluate
 
 def test_otp_bound_to_session_passes_when_control_is_satisfied():
     result = evaluate({'otp_session_bound': True})

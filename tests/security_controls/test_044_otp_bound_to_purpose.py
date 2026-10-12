@@ -1,4 +1,4 @@
-from app.security_controls.044_otp_bound_to_purpose import evaluate
+from app.security_controls.control_044_otp_bound_to_purpose import evaluate
 
 def test_otp_bound_to_purpose_passes_when_control_is_satisfied():
     result = evaluate({'otp_purpose_bound': True})

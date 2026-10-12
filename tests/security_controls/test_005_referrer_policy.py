@@ -1,4 +1,4 @@
-from app.security_controls.005_referrer_policy import evaluate
+from app.security_controls.control_005_referrer_policy import evaluate
 
 def test_referrer_policy_passes_when_control_is_satisfied():
     result = evaluate({'referrer_policy': 'no-referrer'})

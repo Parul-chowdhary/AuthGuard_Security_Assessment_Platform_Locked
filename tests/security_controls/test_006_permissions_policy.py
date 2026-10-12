@@ -1,4 +1,4 @@
-from app.security_controls.006_permissions_policy import evaluate
+from app.security_controls.control_006_permissions_policy import evaluate
 
 def test_permissions_policy_passes_when_control_is_satisfied():
     result = evaluate({'permissions_policy': 'present'})

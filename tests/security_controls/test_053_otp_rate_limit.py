@@ -1,4 +1,4 @@
-from app.security_controls.053_otp_rate_limit import evaluate
+from app.security_controls.control_053_otp_rate_limit import evaluate
 
 def test_otp_rate_limit_passes_when_control_is_satisfied():
     result = evaluate({'otp_rate_limit_per_minute': 1})

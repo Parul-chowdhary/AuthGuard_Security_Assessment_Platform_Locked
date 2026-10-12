@@ -1,4 +1,4 @@
-from app.security_controls.054_reset_rate_limit import evaluate
+from app.security_controls.control_054_reset_rate_limit import evaluate
 
 def test_reset_rate_limit_passes_when_control_is_satisfied():
     result = evaluate({'password_reset_rate_limit_per_hour': 1})

@@ -1,4 +1,4 @@
-from app.security_controls.024_login_generic_errors import evaluate
+from app.security_controls.control_024_login_generic_errors import evaluate
 
 def test_login_generic_errors_passes_when_control_is_satisfied():
     result = evaluate({'login_generic_errors': True})

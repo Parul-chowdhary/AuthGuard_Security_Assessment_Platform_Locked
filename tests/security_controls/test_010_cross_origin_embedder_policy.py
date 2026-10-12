@@ -1,4 +1,4 @@
-from app.security_controls.010_cross_origin_embedder_policy import evaluate
+from app.security_controls.control_010_cross_origin_embedder_policy import evaluate
 
 def test_cross_origin_embedder_policy_passes_when_control_is_satisfied():
     result = evaluate({'cross_origin_embedder_policy': 'present'})

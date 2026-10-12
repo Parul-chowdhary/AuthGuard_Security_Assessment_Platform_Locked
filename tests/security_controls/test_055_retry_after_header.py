@@ -1,4 +1,4 @@
-from app.security_controls.055_retry_after_header import evaluate
+from app.security_controls.control_055_retry_after_header import evaluate
 
 def test_retry_after_header_passes_when_control_is_satisfied():
     result = evaluate({'retry_after_on_429': True})

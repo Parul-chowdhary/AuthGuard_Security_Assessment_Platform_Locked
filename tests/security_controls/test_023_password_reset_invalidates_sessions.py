@@ -1,4 +1,4 @@
-from app.security_controls.023_password_reset_invalidates_sessions import evaluate
+from app.security_controls.control_023_password_reset_invalidates_sessions import evaluate
 
 def test_password_reset_invalidates_sessions_passes_when_control_is_satisfied():
     result = evaluate({'password_reset_invalidates_sessions': True})

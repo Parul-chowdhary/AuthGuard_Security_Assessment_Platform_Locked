@@ -1,4 +1,4 @@
-from app.security_controls.080_finding_remediation import evaluate
+from app.security_controls.control_080_finding_remediation import evaluate
 
 def test_finding_remediation_passes_when_control_is_satisfied():
     result = evaluate({'finding_remediation': 'present'})

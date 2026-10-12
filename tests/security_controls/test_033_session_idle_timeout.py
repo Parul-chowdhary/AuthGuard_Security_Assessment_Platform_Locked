@@ -1,4 +1,4 @@
-from app.security_controls.033_session_idle_timeout import evaluate
+from app.security_controls.control_033_session_idle_timeout import evaluate
 
 def test_session_idle_timeout_passes_when_control_is_satisfied():
     result = evaluate({'session_idle_timeout_minutes': 1})

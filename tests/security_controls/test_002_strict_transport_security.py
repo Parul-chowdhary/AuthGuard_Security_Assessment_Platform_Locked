@@ -1,4 +1,4 @@
-from app.security_controls.002_strict_transport_security import evaluate
+from app.security_controls.control_002_strict_transport_security import evaluate
 
 def test_strict_transport_security_passes_when_control_is_satisfied():
     result = evaluate({'strict_transport_security': 'present'})

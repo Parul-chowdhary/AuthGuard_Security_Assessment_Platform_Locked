@@ -1,4 +1,4 @@
-from app.security_controls.003_frame_ancestors import evaluate
+from app.security_controls.control_003_frame_ancestors import evaluate
 
 def test_frame_ancestors_passes_when_control_is_satisfied():
     result = evaluate({'frame_ancestors': "prefix 'none' suffix"})

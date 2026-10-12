@@ -1,4 +1,4 @@
-from app.security_controls.074_report_includes_scope import evaluate
+from app.security_controls.control_074_report_includes_scope import evaluate
 
 def test_report_includes_scope_passes_when_control_is_satisfied():
     result = evaluate({'report_scope_included': True})

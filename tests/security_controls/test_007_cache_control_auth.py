@@ -1,4 +1,4 @@
-from app.security_controls.007_cache_control_auth import evaluate
+from app.security_controls.control_007_cache_control_auth import evaluate
 
 def test_cache_control_auth_passes_when_control_is_satisfied():
     result = evaluate({'cache_control_auth': 'prefix no-store suffix'})

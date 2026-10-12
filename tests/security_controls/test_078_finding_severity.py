@@ -1,4 +1,4 @@
-from app.security_controls.078_finding_severity import evaluate
+from app.security_controls.control_078_finding_severity import evaluate
 
 def test_finding_severity_passes_when_control_is_satisfied():
     result = evaluate({'finding_severity': 'info'})

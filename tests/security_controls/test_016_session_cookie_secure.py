@@ -1,4 +1,4 @@
-from app.security_controls.016_session_cookie_secure import evaluate
+from app.security_controls.control_016_session_cookie_secure import evaluate
 
 def test_session_cookie_secure_passes_when_control_is_satisfied():
     result = evaluate({'session_secure': True})

@@ -1,4 +1,4 @@
-from app.security_controls.052_login_rate_limit import evaluate
+from app.security_controls.control_052_login_rate_limit import evaluate
 
 def test_login_rate_limit_passes_when_control_is_satisfied():
     result = evaluate({'login_rate_limit_per_minute': 1})

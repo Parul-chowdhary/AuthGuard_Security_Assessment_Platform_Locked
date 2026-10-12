@@ -1,4 +1,4 @@
-from app.security_controls.079_finding_confidence import evaluate
+from app.security_controls.control_079_finding_confidence import evaluate
 
 def test_finding_confidence_passes_when_control_is_satisfied():
     result = evaluate({'finding_confidence': 'low'})

@@ -1,4 +1,4 @@
-from app.security_controls.063_private_ip_block import evaluate
+from app.security_controls.control_063_private_ip_block import evaluate
 
 def test_private_ip_block_passes_when_control_is_satisfied():
     result = evaluate({'private_ip_blocking': True})

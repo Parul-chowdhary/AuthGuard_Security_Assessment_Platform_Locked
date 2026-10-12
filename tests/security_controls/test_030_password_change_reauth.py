@@ -1,4 +1,4 @@
-from app.security_controls.030_password_change_reauth import evaluate
+from app.security_controls.control_030_password_change_reauth import evaluate
 
 def test_password_change_reauth_passes_when_control_is_satisfied():
     result = evaluate({'password_change_reauth': True})

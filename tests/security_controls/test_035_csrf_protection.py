@@ -1,4 +1,4 @@
-from app.security_controls.035_csrf_protection import evaluate
+from app.security_controls.control_035_csrf_protection import evaluate
 
 def test_csrf_protection_passes_when_control_is_satisfied():
     result = evaluate({'csrf_protection': True})

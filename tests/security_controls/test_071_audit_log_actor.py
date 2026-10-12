@@ -1,4 +1,4 @@
-from app.security_controls.071_audit_log_actor import evaluate
+from app.security_controls.control_071_audit_log_actor import evaluate
 
 def test_audit_log_actor_passes_when_control_is_satisfied():
     result = evaluate({'audit_log_actor_id': 'present'})

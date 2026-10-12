@@ -1,4 +1,4 @@
-from app.security_controls.042_otp_attempt_limit import evaluate
+from app.security_controls.control_042_otp_attempt_limit import evaluate
 
 def test_otp_attempt_limit_passes_when_control_is_satisfied():
     result = evaluate({'otp_attempt_limit': 1})

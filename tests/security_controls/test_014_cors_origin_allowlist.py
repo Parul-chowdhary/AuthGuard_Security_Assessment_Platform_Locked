@@ -1,4 +1,4 @@
-from app.security_controls.014_cors_origin_allowlist import evaluate
+from app.security_controls.control_014_cors_origin_allowlist import evaluate
 
 def test_cors_origin_allowlist_passes_when_control_is_satisfied():
     result = evaluate({'cors_origin_allowed': True})

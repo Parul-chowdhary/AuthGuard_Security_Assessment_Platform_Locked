@@ -1,4 +1,4 @@
-from app.security_controls.015_tls_minimum_version import evaluate
+from app.security_controls.control_015_tls_minimum_version import evaluate
 
 def test_tls_minimum_version_passes_when_control_is_satisfied():
     result = evaluate({'tls_version': 'TLSv1.2'})

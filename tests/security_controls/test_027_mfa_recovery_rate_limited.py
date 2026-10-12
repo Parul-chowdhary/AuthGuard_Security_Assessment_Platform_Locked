@@ -1,4 +1,4 @@
-from app.security_controls.027_mfa_recovery_rate_limited import evaluate
+from app.security_controls.control_027_mfa_recovery_rate_limited import evaluate
 
 def test_mfa_recovery_rate_limited_passes_when_control_is_satisfied():
     result = evaluate({'mfa_recovery_rate_limited': True})

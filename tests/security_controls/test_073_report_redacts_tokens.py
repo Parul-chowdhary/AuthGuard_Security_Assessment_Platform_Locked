@@ -1,4 +1,4 @@
-from app.security_controls.073_report_redacts_tokens import evaluate
+from app.security_controls.control_073_report_redacts_tokens import evaluate
 
 def test_report_redacts_tokens_passes_when_control_is_satisfied():
     result = evaluate({'report_token_redaction': True})

@@ -1,4 +1,4 @@
-from app.security_controls.039_token_not_logged import evaluate
+from app.security_controls.control_039_token_not_logged import evaluate
 
 def test_token_not_logged_passes_when_control_is_satisfied():
     result = evaluate({'token_logging_disabled': True})

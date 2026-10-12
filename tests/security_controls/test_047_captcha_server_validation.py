@@ -1,4 +1,4 @@
-from app.security_controls.047_captcha_server_validation import evaluate
+from app.security_controls.control_047_captcha_server_validation import evaluate
 
 def test_captcha_server_validation_passes_when_control_is_satisfied():
     result = evaluate({'captcha_server_side_validation': True})

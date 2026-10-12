@@ -1,4 +1,4 @@
-from app.security_controls.056_distributed_rate_limit import evaluate
+from app.security_controls.control_056_distributed_rate_limit import evaluate
 
 def test_distributed_rate_limit_passes_when_control_is_satisfied():
     result = evaluate({'rate_limit_shared_store': True})

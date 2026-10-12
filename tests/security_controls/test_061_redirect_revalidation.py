@@ -1,4 +1,4 @@
-from app.security_controls.061_redirect_revalidation import evaluate
+from app.security_controls.control_061_redirect_revalidation import evaluate
 
 def test_redirect_revalidation_passes_when_control_is_satisfied():
     result = evaluate({'redirects_revalidated': True})

@@ -1,4 +1,4 @@
-from app.security_controls.013_cors_wildcard_credentials import evaluate
+from app.security_controls.control_013_cors_wildcard_credentials import evaluate
 
 def test_cors_wildcard_credentials_passes_when_control_is_satisfied():
     result = evaluate({'cors_wildcard_credentials': False})

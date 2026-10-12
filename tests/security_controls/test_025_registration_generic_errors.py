@@ -1,4 +1,4 @@
-from app.security_controls.025_registration_generic_errors import evaluate
+from app.security_controls.control_025_registration_generic_errors import evaluate
 
 def test_registration_generic_errors_passes_when_control_is_satisfied():
     result = evaluate({'registration_generic_errors': True})
