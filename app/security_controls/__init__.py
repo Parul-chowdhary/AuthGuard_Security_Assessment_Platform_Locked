@@ -20,19 +20,24 @@ def evaluate_spec(spec: dict[str, Any], observation: dict[str, Any]) -> dict[str
         return {"id": spec["id"], "status": "inconclusive",
                 "severity": spec["severity"], "message": f"No evidence supplied for {key}."}
     op, expected = spec["operator"], spec.get("expected")
-    checks = {
-        "present": exists and actual is not None and actual != "",
-        "equals": exists and actual == expected,
-        "truthy": bool(actual),
-        "falsy": not bool(actual),
-        "contains": exists and expected in actual if actual is not None else False,
-        "not_contains": exists and expected not in actual if actual is not None else False,
-        "at_least": isinstance(actual, (int, float)) and actual >= expected,
-        "one_of": exists and actual in expected,
-    }
-    if op not in checks:
+    if op == "present":
+        passed = exists and actual is not None and actual != ""
+    elif op == "equals":
+        passed = exists and actual == expected
+    elif op == "truthy":
+        passed = bool(actual)
+    elif op == "falsy":
+        passed = not bool(actual)
+    elif op == "contains":
+        passed = exists and actual is not None and expected in actual
+    elif op == "not_contains":
+        passed = exists and actual is not None and expected not in actual
+    elif op == "at_least":
+        passed = isinstance(actual, (int, float)) and not isinstance(actual, bool) and actual >= expected
+    elif op == "one_of":
+        passed = exists and actual in expected
+    else:
         raise ValueError(f"Unsupported control operator: {op}")
-    passed = checks[op]
     if passed:
         return {"id": spec["id"], "status": "pass", "severity": spec["severity"],
                 "message": spec["pass_message"]}
